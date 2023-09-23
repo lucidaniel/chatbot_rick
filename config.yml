@@ -26,9 +26,11 @@ TRIGGER:
 
 DISABLE_PRESENCE: false 
 PRESENCES:
-  - Stop being stupid Morty
-  - Snorting Kalaxian Crystals
-  - Wubbalubbadubdub!
+  - science
+  - your mom
+  - feasting in Shoney's
+  - snorting Kalaxian Crystals
+  - wubbalubba-dub-dub
 # List of different presences to be used
 
 OCR_MODEL_URLS:
