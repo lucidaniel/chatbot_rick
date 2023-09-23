@@ -3,8 +3,8 @@ services:
   bot:
     build: .
     volumes: 
-      - Rick:/app
+      - rick:/app
     restart: unless-stopped
-    container_name: "discordbot"
+    container_name: "Rick"
 volumes:
-  Rick:
+  rick:
