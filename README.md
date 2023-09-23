@@ -1,2 +1,2 @@
 # chatbot
-My fork of Naga AI chatbot
+My fork of https://github.com/mishalhossin/Discord-AI-Chatbot
