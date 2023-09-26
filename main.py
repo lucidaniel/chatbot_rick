@@ -182,6 +182,30 @@ async def on_message(message):
                     await message.channel.send("I apologize for any inconvenience caused. It seems that there was an error preventing the delivery of my message. Additionally, it appears that the message I was replying to has been deleted, which could be the reason for the issue. If you have any further questions or if there's anything else I can assist you with, please let me know and I'll be happy to help.")
         else:
             await message.reply("I apologize for any inconvenience caused. It seems that there was an error preventing the delivery of my message.")
+    
+    text_only_triggers = ["generate me an image", "create an image", "draw me an image"]
+    image_attachment_triggers = ["redo this", "regenerate this", "remake this"]
+
+    # Check for text-only trigger words
+    if any(trigger in message.content.lower() for trigger in text_only_triggers):
+        prompt = message.content  # Use the message content as the prompt
+
+        # Generate the image using the desired method
+        image_response = sdxl(prompt)  # or generate_image_prodia
+
+        # Send the generated image as a response
+        await message.reply(image_response)
+
+    # Check for image attachment trigger words
+    elif message.attachments and any(trigger in message.content.lower() for trigger in image_attachment_triggers) and ("image" in message.content.lower() or "picture" in message.content.lower()):
+        image_url = message.attachments[0].url
+        prompt = f"{message.content} Image: {image_url}"  # Combine message content and image URL as the prompt
+
+        # Generate the image using the desired method
+        image_response = sdxl(prompt)  # or generate_image_prodia
+
+        # Send the generated image as a response
+        await message.reply(image_response)
 
             
 @bot.event
