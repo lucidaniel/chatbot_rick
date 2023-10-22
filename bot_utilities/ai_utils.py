@@ -2,7 +2,6 @@ import aiohttp
 import io
 from datetime import datetime
 import re
-import asyncio
 import time
 import random
 import asyncio
@@ -45,7 +44,7 @@ async def search(prompt):
     search_results_limit = config['MAX_SEARCH_RESULTS']
 
     if url_match := re.search(r'(https?://\S+)', prompt):
-        search_query = url_match.group(0)
+        search_query = url_match.group(0) 
     else:
         search_query = prompt
 

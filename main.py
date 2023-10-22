@@ -79,7 +79,7 @@ model_blob = "\n".join(chat_models)
 @bot.event
 async def on_ready():
     await bot.tree.sync()
-    presences_cycle = cycle(presences + [current_language['help_footer']])
+    presences_cycle = cycle(presences)
     print(f"{bot.user} aka {bot.user.name} has connected to Discord!")
     invite_link = discord.utils.oauth_url(
         bot.user.id,
