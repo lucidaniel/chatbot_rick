@@ -18,7 +18,6 @@ from bot_utilities.ai_utils import generate_response, generate_image_prodia, sea
 from bot_utilities.response_util import split_response, translate_to_en, get_random_prompt
 from bot_utilities.discord_util import check_token, get_discord_token
 from bot_utilities.config_loader import config, load_current_language, load_instructions
-from bot_utilities.replit_detector import detect_replit
 from bot_utilities.sanitization_utils import sanitize_prompt
 from model_enum import Model
 load_dotenv()
@@ -140,7 +139,7 @@ async def on_message(message):
     bot_name_in_message = bot.user.name.lower() in message.content.lower() and smart_mention
     respond_in_thread = isinstance(message.channel, discord.Thread) and (is_bot_mentioned or is_replied or contains_trigger_word)
 
-    if is_active_channel or is_allowed_dm or respond_in_thread or contains_trigger_word or is_bot_mentioned or is_replied or bot_name_in_message
+    if is_active_channel or is_allowed_dm or respond_in_thread or contains_trigger_word or is_bot_mentioned or is_replied or bot_name_in_message:
         if string_channel_id in active_channels:
             instruc_config = active_channels[string_channel_id]          
         else:
@@ -412,46 +411,6 @@ async def imagine_poly(ctx, *, prompt: str, images: int = 4):
         
     await ctx.send(files=files, ephemeral=True)
 
-@commands.guild_only()
-@bot.hybrid_command(name="gif", description=current_language["nekos"])
-@app_commands.choices(category=[
-    app_commands.Choice(name=category.capitalize(), value=category)
-    for category in ['baka', 'bite', 'blush', 'bored', 'cry', 'cuddle', 'dance', 'facepalm', 'feed', 'handhold', 'happy', 'highfive', 'hug', 'kick', 'kiss', 'laugh', 'nod', 'nom', 'nope', 'pat', 'poke', 'pout', 'punch', 'shoot', 'shrug']
-])
-async def gif(ctx, category: app_commands.Choice[str]):
-    base_url = "https://nekos.best/api/v2/"
-
-    url = base_url + category.value
-
-    async with aiohttp.ClientSession() as session:
-        async with session.get(url) as response:
-            if response.status != 200:
-                await ctx.channel.send("Failed to fetch the image.")
-                return
-
-            json_data = await response.json()
-
-            results = json_data.get("results")
-            if not results:
-                await ctx.channel.send("N    string_channel_id = f"{message.channel.id}"
-    is_replied = (message.reference and message.reference.resolved.author == bot.user) and smart_mention
-    is_dm_channel = isinstance(message.channel, discord.DMChannel)
-    is_active_channel = string_channel_id in active_channels
-    is_allowed_dm = allow_dm and is_dm_channel
-    contains_trigger_word = any(word in message.content for word in trigger_words)
-    is_bot_mentioned = bot.user.mentioned_in(message) and smart_mention and not message.mention_everyone
-    bot_name_in_message = bot.user.name.lower() in message.content.lower() and smart_mention
-    respond_in_thread = isinstance(message.channel, discord.Thread) and (is_bot_mentioned or is_replied or contains_trigger_word)
-
-    if is_active_channel or is_allowed_dm or respond_in_thread or contains_trigger_word or is_bot_mentioned or is_replied or bot_name_in_message image found.")
-                return
-
-            image_url = results[0].get("url")
-
-            embed = Embed(colour=0x141414)
-            embed.set_image(url=image_url)
-            await ctx.send(embed=embed)
-
 @bot.event
 async def on_command_error(ctx, error):
     if isinstance(error, commands.MissingPermissions):
@@ -459,8 +418,5 @@ async def on_command_error(ctx, error):
     elif isinstance(error, commands.NotOwner):
         await ctx.send(f"{ctx.author.mention} Only the owner of the bot can use this command.")
 
-if detect_replit():
-    from bot_utilities.replit_flask_runner import run_flask_in_thread
-    run_flask_in_thread()
 if __name__ == "__main__":
     bot.run(TOKEN)
